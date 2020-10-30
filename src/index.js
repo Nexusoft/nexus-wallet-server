@@ -2,6 +2,12 @@ import express from 'express';
 import axios from 'axios';
 
 const apiKey = process.env.API_KEY;
+const batch1 =
+  'BTC,USD,EUR,AUD,BRL,GBP,CAD,CLP,CNY,CZK,HKD,ILS,JPY,KRW,MYR,MXN';
+const batch2 = 'NZD,PKR,RUB,SAR,SGD,ZAR,CHF,TWD,AED,INR,PLN';
+const getUrl = (tsyms) =>
+  `https://min-api.cryptocompare.com/data/pricemultifull?api_key=${apiKey}&fsyms=NXS,BTC&tsyms=${tsyms}`;
+
 let marketData = null;
 let error = null;
 
@@ -12,12 +18,8 @@ if (!apiKey) {
 async function fetchMarketData() {
   try {
     const [prices1, prices2] = await Promise.all([
-      axios(
-        `https://min-api.cryptocompare.com/data/pricemultifull?api_key=${apiKey}&fsyms=NXS,BTC&tsyms=BTC,USD,EUR,AUD,BRL,GBP,CAD,CLP,CNY,CZK,HKD,ILS,JPY,KRW,MYR,MXN`
-      ),
-      axios(
-        `https://min-api.cryptocompare.com/data/pricemultifull?api_key=${apiKey}&fsyms=NXS,BTC&tsyms=NZD,PKR,RUB,SAR,SGD,ZAR,CHF,TWD,AED,INR,PLN`
-      ),
+      axios(getUrl(batch1)),
+      axios(getUrl(batch2)),
     ]);
 
     if (!(prices1 && prices2 && prices1.data && prices2.data)) {
