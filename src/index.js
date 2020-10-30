@@ -71,8 +71,8 @@ function servePriceData(app) {
     if (marketData) {
       const baseCurrency = req.query?.base_currency;
       const data = marketData?.RAW?.NXS?.[baseCurrency];
-      const price = data?.price;
-      const changePct24Hr = data?.changePct24Hr;
+      const price = data?.PRICE;
+      const changePct24Hr = data?.CHANGEPCT24HOUR;
       res.json({
         price,
         changePct24Hr,
