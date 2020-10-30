@@ -81,6 +81,18 @@ function servePriceData(app) {
       res.status(500).json({ error });
     }
   });
+
+  app.get('/market-price', (req, res) => {
+    if (marketData) {
+      const baseCurrency = req.query?.base_currency;
+      const price = marketData?.RAW?.NXS?.[baseCurrency]?.PRICE;
+      res.json({
+        price,
+      });
+    } else {
+      res.status(500).json({ error });
+    }
+  });
 }
 
 async function run() {
