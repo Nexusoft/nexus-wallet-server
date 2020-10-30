@@ -18,6 +18,7 @@ module.exports = function (api) {
           root: ['./src'],
         },
       ],
+      ['@babel/plugin-proposal-optional-chaining', { loose: false }],
     ],
   };
 };

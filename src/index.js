@@ -66,6 +66,21 @@ function servePriceData(app) {
       res.status(500).json({ error });
     }
   });
+
+  app.get('/market-data', (req, res) => {
+    if (marketData) {
+      const baseCurrency = req.query?.base_currency;
+      const data = marketData?.RAW?.NXS?.[baseCurrency];
+      const price = data?.price;
+      const changePct24Hr = data?.changePct24Hr;
+      res.json({
+        price,
+        changePct24Hr,
+      });
+    } else {
+      res.status(500).json({ error });
+    }
+  });
 }
 
 async function run() {
