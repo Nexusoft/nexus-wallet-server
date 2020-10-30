@@ -1,0 +1,26 @@
+{
+  "name": "nexus-wallet-server",
+  "version": "1.0.0",
+  "description": "Hosting services for Nexus desktop wallet and mobile wallet",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d dist",
+    "start": "node dist/index.js"
+  },
+  "author": "Krysto",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "babel-plugin-module-resolver": "^4.0.0"
+  },
+  "engines": {
+    "node": "15.x",
+    "npm": "6.x"
+  }
+}
