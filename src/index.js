@@ -4,7 +4,7 @@ import axios from 'axios';
 const apiKey = process.env.API_KEY;
 const batch1 =
   'BTC,USD,EUR,AUD,BRL,GBP,CAD,CLP,CNY,CZK,HKD,ILS,JPY,KRW,MYR,MXN';
-const batch2 = 'NZD,PKR,RUB,SAR,SGD,ZAR,CHF,TWD,AED,INR,PLN';
+const batch2 = 'NZD,PKR,RUB,SAR,SGD,ZAR,CHF,TWD,AED,INR,PLN,VND,THB,MMK';
 const getUrl = (tsyms) =>
   `https://min-api.cryptocompare.com/data/pricemultifull?api_key=${apiKey}&fsyms=NXS,BTC&tsyms=${tsyms}`;
 
