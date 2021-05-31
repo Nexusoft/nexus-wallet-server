@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import axios from 'axios';
 
 const apiKey = process.env.API_KEY;
@@ -59,6 +60,12 @@ async function fetchMarketData() {
 }
 
 function servePriceData(app) {
+  app.use(
+    cors({
+      origin: /^http:\/\/localhost/,
+    })
+  );
+
   // backward compatibility
   app.get('/displaydata', (req, res) => {
     if (marketData) {
