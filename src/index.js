@@ -24,7 +24,7 @@ async function fetchMarketData() {
       axios(getUrl(batch2)),
     ]);
 
-    if (!(prices1 && prices2 && prices1.data && prices2.data)) {
+    if (!prices1?.data || !prices2?.data) {
       marketData = null;
       error = { message: 'Invalid data returned from cryptocompare' };
       return;
@@ -78,9 +78,9 @@ function servePriceData(app) {
   app.get('/market-data', (req, res) => {
     if (marketData) {
       const baseCurrency = req.query?.base_currency;
-      const data = marketData?.RAW?.NXS?.[baseCurrency];
-      const price = data?.PRICE;
-      const changePct24Hr = data?.CHANGEPCT24HOUR;
+      const data = marketData.RAW.NXS[baseCurrency];
+      const price = data.PRICE;
+      const changePct24Hr = data.CHANGEPCT24HOUR;
       res.json({
         price,
         changePct24Hr,
@@ -93,7 +93,7 @@ function servePriceData(app) {
   app.get('/market-price', (req, res) => {
     if (marketData) {
       const baseCurrency = req.query?.base_currency;
-      const price = marketData?.RAW?.NXS?.[baseCurrency]?.PRICE;
+      const price = marketData.RAW.NXS[baseCurrency].PRICE;
       res.json({
         price,
       });
