@@ -123,6 +123,10 @@ function servePriceData(app) {
   app.get('/featured-modules', (req, res) => {
     const walletVersion = req.query?.wallet_version;
     const parsedVersion = parse(walletVersion);
+
+    // Cache the list for 1 day
+    res.append('Cache-Control', 'max-age=86400000');
+
     if (!parsedVersion) {
       res.json(latestModuleList);
     } else {
