@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
@@ -111,7 +112,7 @@ function servePriceData(app) {
 function serveFeaturedModules(app) {
   app.use(
     '/resources',
-    express.static('../resources', {
+    express.static(path.join(__dirname, '..', 'resources'), {
       etag: false,
       immutable: true,
       maxAge: 1000 * 60 * 60 * 24 * 90,
