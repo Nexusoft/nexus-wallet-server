@@ -106,10 +106,9 @@ function servePriceData(app) {
       res.status(500).json({ error });
     }
   });
+}
 
-  /**
-   * Featured modules
-   */
+function serveFeaturedModules(app) {
   app.use(
     '/resources',
     express.static('../resources', {
@@ -147,6 +146,7 @@ async function run() {
   app.use(express.json());
 
   servePriceData(app);
+  serveFeaturedModules(app);
 
   const port = process.env.PORT || 80;
   app.listen(port, () => {
