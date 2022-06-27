@@ -101,6 +101,18 @@ function servePriceData(app) {
       res.status(500).json({ error });
     }
   });
+
+  /**
+   * Featured modules
+   */
+  app.use(
+    '/resources',
+    express.static('../resources', {
+      immutable: true,
+      maxAge: 1000 * 60 * 60 * 24 * 90,
+      index: false,
+    })
+  );
 }
 
 async function run() {
