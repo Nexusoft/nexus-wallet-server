@@ -113,6 +113,7 @@ function servePriceData(app) {
   app.use(
     '/resources',
     express.static('../resources', {
+      etag: false,
       immutable: true,
       maxAge: 1000 * 60 * 60 * 24 * 90,
       index: false,
