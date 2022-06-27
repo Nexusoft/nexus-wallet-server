@@ -1,6 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
+import { parse, gte } from 'semver';
+
+import featuredModules from './featuredModules';
 
 const apiKey = process.env.API_KEY;
 const batch1 =
@@ -12,6 +15,8 @@ const getUrl = (tsyms) =>
 
 let marketData = null;
 let error = null;
+
+const latestModuleList = featuredModules.find((list) => list.latest).modules;
 
 if (!apiKey) {
   console.log('API_KEY environment variable not found!');
@@ -113,6 +118,20 @@ function servePriceData(app) {
       index: false,
     })
   );
+
+  app.get('/featured-modules', (req, res) => {
+    const walletVersion = req.query?.wallet_version;
+    const parsedVersion = parse(walletVersion);
+    if (!parsedVersion) {
+      res.json(latestModuleList);
+    } else {
+      const matchedList = featuredModules.find(
+        (list) => parsedVersion.compareMain(list.fromWalletVersion) >= 0
+      );
+      const { modules } = matchedList;
+      res.json(modules);
+    }
+  });
 }
 
 async function run() {
