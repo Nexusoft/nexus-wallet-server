@@ -117,6 +117,9 @@ function serveFeaturedModules(app) {
       immutable: true,
       maxAge: 1000 * 60 * 60 * 24 * 90,
       index: false,
+      setHeaders: (res) => {
+        res.append('Access-Control-Allow-Origin', '*');
+      },
     })
   );
 
