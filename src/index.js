@@ -127,15 +127,17 @@ function serveFeaturedModules(app) {
     // Cache the list for 1 day
     res.append('Cache-Control', 'max-age=86400000');
 
-    if (!parsedVersion) {
-      res.json(latestModuleList);
-    } else {
+    if (parsedVersion) {
       const matchedList = featuredModules.find(
         (list) => parsedVersion.compareMain(list.fromWalletVersion) >= 0
       );
-      const { modules } = matchedList;
-      res.json(modules);
+      if (matchedList) {
+        res.json(matchedList.modules);
+      }
     }
+
+    // if (!parsedVersion || !matchedList)
+    res.json(latestModuleList);
   });
 }
 
