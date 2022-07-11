@@ -10,6 +10,7 @@ export default [
         type: 'app',
         icon: 'invoice.svg',
         repoInfo: {
+          host: 'github.com',
           owner: 'Nexusoft',
           repo: 'nexus-invoice-module',
         },
@@ -25,6 +26,7 @@ export default [
         type: 'app',
         icon: 'chart.svg',
         repoInfo: {
+          host: 'github.com',
           owner: 'Nexusoft',
           repo: 'nexus-market-data-module',
         },
