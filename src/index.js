@@ -2,7 +2,7 @@ import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
-import { parse, gte } from 'semver';
+import { parse } from 'semver';
 
 import featuredModules from './featuredModules';
 
@@ -129,6 +129,7 @@ function serveFeaturedModules(app) {
 
     if (parsedVersion) {
       const matchedList = featuredModules.find(
+        // use `compareMain` so that prerelease tags are ignored
         (list) => parsedVersion.compareMain(list.fromWalletVersion) >= 0
       );
       if (matchedList) {
