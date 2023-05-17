@@ -23,6 +23,8 @@ async function fetchMarketData() {
       axios(getUrl(batch1)),
       axios(getUrl(batch2)),
     ]);
+    console.log('prices1', prices1);
+    console.log('prices2', prices2);
 
     if (!prices1?.data || !prices2?.data) {
       marketData = null;
