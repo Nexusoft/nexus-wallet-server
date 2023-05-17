@@ -56,6 +56,8 @@ async function fetchMarketData() {
   } catch (err) {
     marketData = null;
     error = err;
+    console.error('Failed to fetch market data');
+    console.error(err);
   }
 }
 
