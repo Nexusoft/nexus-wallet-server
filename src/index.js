@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import axios from 'axios';
 
-// const apiKey = process.env.API_KEY;
 const currencies =
   'BTC,USD,EUR,AUD,BRL,GBP,CAD,CLP,CNY,CZK,HKD,ILS,JPY,KRW,MYR,MXN,NZD,PKR,RUB,SAR,SGD,ZAR,CHF,TWD,AED,INR,PLN,VND,THB,MMK,IDR,PHP';
 const url = `https://api.coingecko.com/api/v3/simple/price?ids=nexus&vs_currencies=${currencies}&include_24hr_change=true`;
@@ -14,10 +13,6 @@ let error = null;
 const validTime = 15 * 60 * 1000; // data expires after 15 minutes
 const isDataValid = () =>
   !!marketData && !!lastFetched && Date.now() - lastFetched <= validTime;
-
-// if (!apiKey) {
-//   console.log('API_KEY environment variable not found!');
-// }
 
 async function fetchMarketData() {
   try {
@@ -44,15 +39,6 @@ function servePriceData(app) {
       origin: /^http:\/\/localhost/,
     })
   );
-
-  // // backward compatibility
-  // app.get('/displaydata', (req, res) => {
-  //   if (marketData) {
-  //     res.json(marketData);
-  //   } else {
-  //     res.status(500).json({ error });
-  //   }
-  // });
 
   app.get('/market-data', (req, res) => {
     if (isDataValid()) {
