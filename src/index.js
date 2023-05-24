@@ -12,7 +12,10 @@ let error = null;
 
 const validTime = 15 * 60 * 1000; // data expires after 15 minutes
 const isDataValid = () =>
-  !!marketData && !!lastFetched && Date.now() - lastFetched <= validTime;
+  !!marketData &&
+  !error &&
+  !!lastFetched &&
+  Date.now() - lastFetched <= validTime;
 
 async function fetchMarketData() {
   try {
