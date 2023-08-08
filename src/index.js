@@ -12,10 +12,7 @@ let error = null;
 
 const validTime = 15 * 60 * 1000; // data expires after 15 minutes
 const isDataValid = () =>
-  !!marketData &&
-  !error &&
-  !!lastFetched &&
-  Date.now() - lastFetched <= validTime;
+  !!marketData && !!lastFetched && Date.now() - lastFetched <= validTime;
 
 async function fetchMarketData() {
   try {
@@ -30,17 +27,18 @@ async function fetchMarketData() {
     lastFetched = Date.now();
     error = null;
     console.log('[SUCCESS]');
-    console.log(marketData);
   } catch (err) {
     error = err;
     console.error('[ERROR] Failed to fetch market data');
     if (err?.toJSON) {
       console.error(err.toJSON());
-      if (err.response) {
-        console.log(err.response.headers);
-      }
-    } else {
-      console.error(err);
+    }
+    if (err?.message) {
+      console.log('Error message: ', err.message);
+    }
+    if (err?.response) {
+      console.error('Response headers: ', err.response.headers);
+      console.error('Response data: ', err.response.data);
     }
   }
 }
