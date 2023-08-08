@@ -31,8 +31,12 @@ async function fetchMarketData() {
     error = null;
   } catch (err) {
     error = err;
-    console.error('Failed to fetch market data');
-    console.error(err);
+    console.error('[ERROR]', Date(), 'Failed to fetch market data');
+    if (err?.isAxiosError) {
+      console.error(err?.toJSON());
+    } else {
+      console.error(err);
+    }
   }
 }
 
@@ -72,7 +76,7 @@ function servePriceData(app) {
 
 async function run() {
   await fetchMarketData();
-  setInterval(fetchMarketData, 121000);
+  setInterval(fetchMarketData, 60000);
 
   const app = express();
   app.use(express.json());
