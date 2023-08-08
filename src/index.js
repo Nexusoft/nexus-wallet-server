@@ -72,7 +72,7 @@ function servePriceData(app) {
 
 async function run() {
   await fetchMarketData();
-  setInterval(fetchMarketData, 60000);
+  setInterval(fetchMarketData, 121000);
 
   const app = express();
   app.use(express.json());
