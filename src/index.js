@@ -29,11 +29,16 @@ async function fetchMarketData() {
     marketData = prices.data.nexus;
     lastFetched = Date.now();
     error = null;
+    console.log('[SUCCESS]');
+    console.log(marketData);
   } catch (err) {
     error = err;
-    console.error('[ERROR]', Date(), 'Failed to fetch market data');
-    if (err?.isAxiosError) {
-      console.error(err?.toJSON());
+    console.error('[ERROR] Failed to fetch market data');
+    if (err?.toJSON) {
+      console.error(err.toJSON());
+      if (err.response) {
+        console.log(err.response.headers);
+      }
     } else {
       console.error(err);
     }
