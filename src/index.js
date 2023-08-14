@@ -16,7 +16,7 @@ const isDataValid = () =>
   !!marketData && !!lastFetched && Date.now() - lastFetched <= validTime;
 
 async function fetchMarketData() {
-  let timeoutSet = false;
+  let retryAfter = null;
   try {
     const prices = await axios(url);
 
@@ -43,19 +43,15 @@ async function fetchMarketData() {
       console.error('Response data: ', err.response.data);
       if (err.response.status === 429) {
         // hit rate limit
-        const retryAfter = err.response.headers?.['retry-after'];
-        if (retryAfter) {
-          clearTimeout(global.timerId);
-          global.timerId = setTimeout(fetchMarketData, retryAfter * 1000);
-          timeoutSet = true;
-        }
+        retryAfter = err.response.headers?.['retry-after'] || null;
       }
     }
   } finally {
-    if (!timeoutSet) {
-      clearTimeout(global.timerId);
-      global.timerId = setTimeout(fetchMarketData, interval);
-    }
+    clearTimeout(global.timerId);
+    global.timerId = setTimeout(
+      fetchMarketData,
+      retryAfter ? retryAfter * 1000 : interval
+    );
   }
 }
 
