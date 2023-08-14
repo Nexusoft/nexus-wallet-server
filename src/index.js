@@ -9,6 +9,7 @@ const url = `https://api.coingecko.com/api/v3/simple/price?ids=nexus&vs_currenci
 let marketData = null;
 let lastFetched = null;
 let error = null;
+let intervalId = null;
 
 const validTime = 15 * 60 * 1000; // data expires after 15 minutes
 const isDataValid = () =>
@@ -39,6 +40,14 @@ async function fetchMarketData() {
     if (err?.response) {
       console.error('Response headers: ', err.response.headers);
       console.error('Response data: ', err.response.data);
+      if (err.response.status === 429) {
+        // hit rate limit
+        const retryAfter = err.response.headers?.['retry-after'];
+        if (retryAfter) {
+          clearInterval(intervalId);
+          setInterval(fetchMarketData, retryAfter * 1000);
+        }
+      }
     }
   }
 }
@@ -79,7 +88,7 @@ function servePriceData(app) {
 
 async function run() {
   await fetchMarketData();
-  setInterval(fetchMarketData, 60000);
+  intervalId = setInterval(fetchMarketData, 60000);
 
   const app = express();
   app.use(express.json());
