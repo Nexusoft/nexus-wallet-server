@@ -6,16 +6,17 @@ const currencies =
   'BTC,USD,EUR,AUD,BRL,GBP,CAD,CLP,CNY,CZK,HKD,ILS,JPY,KRW,MYR,MXN,NZD,PKR,RUB,SAR,SGD,ZAR,CHF,TWD,AED,INR,PLN,VND,THB,MMK,IDR,PHP';
 const url = `https://api.coingecko.com/api/v3/simple/price?ids=nexus&vs_currencies=${currencies}&include_24hr_change=true`;
 
+const interval = 60000;
 let marketData = null;
 let lastFetched = null;
 let error = null;
-let intervalId = null;
 
 const validTime = 15 * 60 * 1000; // data expires after 15 minutes
 const isDataValid = () =>
   !!marketData && !!lastFetched && Date.now() - lastFetched <= validTime;
 
 async function fetchMarketData() {
+  let timeoutSet = false;
   try {
     const prices = await axios(url);
 
@@ -44,10 +45,16 @@ async function fetchMarketData() {
         // hit rate limit
         const retryAfter = err.response.headers?.['retry-after'];
         if (retryAfter) {
-          clearInterval(intervalId);
-          intervalId = setInterval(fetchMarketData, retryAfter * 1000);
+          clearTimeout(global.timerId);
+          global.timerId = setTimeout(fetchMarketData, retryAfter * 1000);
+          timeoutSet = true;
         }
       }
+    }
+  } finally {
+    if (!timeoutSet) {
+      clearTimeout(global.timerId);
+      global.timerId = setTimeout(fetchMarketData, interval);
     }
   }
 }
@@ -87,8 +94,10 @@ function servePriceData(app) {
 }
 
 async function run() {
+  if (global.timerId) {
+    clearTimeout(global.timerId);
+  }
   await fetchMarketData();
-  intervalId = setInterval(fetchMarketData, 60000);
 
   const app = express();
   app.use(express.json());
