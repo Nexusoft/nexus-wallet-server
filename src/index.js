@@ -6,7 +6,7 @@ const currencies =
   'BTC,USD,EUR,AUD,BRL,GBP,CAD,CLP,CNY,CZK,HKD,ILS,JPY,KRW,MYR,MXN,NZD,PKR,RUB,SAR,SGD,ZAR,CHF,TWD,AED,INR,PLN,VND,THB,MMK,IDR,PHP';
 const url = `https://api.coingecko.com/api/v3/simple/price?ids=nexus&vs_currencies=${currencies}&include_24hr_change=true`;
 
-const interval = 60000;
+const interval = 90000;
 let marketData = null;
 let lastFetched = null;
 let error = null;
