@@ -45,7 +45,7 @@ async function fetchMarketData() {
         const retryAfter = err.response.headers?.['retry-after'];
         if (retryAfter) {
           clearInterval(intervalId);
-          setInterval(fetchMarketData, retryAfter * 1000);
+          intervalId = setInterval(fetchMarketData, retryAfter * 1000);
         }
       }
     }
