@@ -26,6 +26,7 @@ async function fetchMarketData() {
     }
 
     marketData = prices.data.nexus;
+    marketData.VND *= 10;
     lastFetched = Date.now();
     error = null;
     console.log('[SUCCESS]');
